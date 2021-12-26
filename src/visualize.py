@@ -67,5 +67,8 @@ def _build_tree_string(root, curr_index, balance_factor=False):
 
 
 def pprint(btree, balance_factor=False) -> None:
+    if btree is None:
+        print("There is no node in this tree")
+        return
     lines = _build_tree_string(btree, 0, balance_factor)[0]
     print("\n" + "\n".join((line.rstrip() for line in lines)))

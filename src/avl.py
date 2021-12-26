@@ -8,8 +8,12 @@ class Node():
         self.height = 1
 
 class AVLTree():
-    def __init__(self, root=None):
+    def __init__(self, root=None, verbose=False):
         self.root = root
+        self.verbose = verbose
+
+    def enable_verbose(self):
+        self.verbose = True
 
     def height_of(self, node):
         if not node:
@@ -28,8 +32,12 @@ class AVLTree():
             return node
         return self.find_min_value_node(node.left)
 
-    def insert(self, val):
+    def insert(self, val, verbose=False):
+        if self.verbose:
+            print("Insert new value:", val)
         self.root = self.__insert(self.root, val)
+        if self.verbose:
+            self.debug()
 
     def __insert(self, node, val):
         if not node:
@@ -44,29 +52,48 @@ class AVLTree():
         node.height = 1 + max(self.height_of(node.left), self.height_of(node.right))
 
         balance = self.cal_balance(node)
+        if self.verbose:
+            self.debug()
+            print("Balance factor of node {} is: {}".format(node.val, balance))
 
         # Left Left
         if balance > 1 and val < node.left.val:
+            if self.verbose:
+                print("This is case left-left at node {}".format(node.val))
             return self.rotate_right(node)
 
         # Right Right
         if balance < -1 and val > node.right.val:
+            if self.verbose:
+                print("This is case right-right at node {}".format(node.val))
             return self.rotate_left(node)
 
         # Left Right
         if balance > 1 and val > node.left.val:
+            if self.verbose:
+                print("This is case left-right at node {}".format(node.val))
             node.left = self.rotate_left(node.left)
+            if self.verbose:
+                self.debug()
             return self.rotate_right(node)
 
         # Right Left
         if balance < -1 and val < node.right.val:
+            if self.verbose:
+                print("This is case right-left at node {}".format(node.val))
             node.right = self.rotate_right(node.right)
+            if self.verbose:
+                self.debug()
             return self.rotate_left(node)
 
         return node
 
     def delete(self, val):
+        if self.verbose:
+            print("Delete value:", val)
         self.root = self.__delete(self.root, val)
+        if self.verbose:
+            self.debug()
 
     def __delete(self, node, val):
         if not node:
@@ -99,31 +126,48 @@ class AVLTree():
         node.height = 1 + max(self.height_of(node.left), self.height_of(node.right))
 
         balance = self.cal_balance(node)
+        if self.verbose:
+            self.debug()
+            print("Balance factor of node {} is: {}".format(node.val, balance))
 
         # Left Left
         if balance > 1 and self.cal_balance(node.left) >= 0:
+            if self.verbose:
+                print("This is case left-left at node {}".format(node.val))
             return self.rotate_right(node)
 
         # Right Right
         if balance < -1 and self.cal_balance(node.right) <= 0:
+            if self.verbose:
+                print("This is case right-right at node {}".format(node.val))
             return self.rotate_left(node)
 
         # Left Right
         if balance > 1 and self.cal_balance(node.left) < 0:
+            if self.verbose:
+                print("This is case left-right at node {}".format(node.val))
             node.left = self.rotate_left(node.left)
+            if self.verbose:
+                self.debug()
             return self.rotate_right(node)
 
         # Right Left
         if balance < -1 and self.cal_balance(node.right) > 0:
+            if self.verbose:
+                print("This is case right-left at node {}".format(node.val))
             node.right = self.rotate_right(node.right)
+            if self.verbose:
+                self.debug()
             return self.rotate_left(node)
 
         return node
 
     def rotate_left(self, y):
+        if self.verbose:
+            print("Let's rotate left node {}".format(y.val))
+
         z = y.right
         T2 = z.left
-
         z.left = y
         y.right = T2
 
@@ -139,9 +183,11 @@ class AVLTree():
         return z
 
     def rotate_right(self, z):
+        if self.verbose:
+            print("Let's rotate right node {}".format(z.val))
+
         y = z.left
         T2 = y.right
-
         y.right = z
         z.left = T2
 

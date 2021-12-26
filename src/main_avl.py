@@ -1,22 +1,25 @@
 from avl import AVLTree
 from visualize import pprint
 
-t = AVLTree()
-nums = [9, 5, 10, 0, 6, 11, -1, 1, 2]
+t = AVLTree(verbose=True)
+nums = [9, 5, 20, 0, 6, 21, -1, 1, 2, -2, -3, 25, 26, 24, 23]
 
 for num in nums:
     t.insert(num)
 
-# Preorder Traversal
-print("Preorder Traversal after insertion -")
-# t.preOrder(root)
-pprint(t.root)
-
 # Delete
-key = 10
-t.delete(key)
-
-# Preorder Traversal
-print("Preorder Traversal after deletion -")
-# t.preOrder(root)
-pprint(t.root)
+t.delete(20)
+t.delete(21)
+t.delete(23)
+t.delete(0)
+t.delete(9)
+t.delete(26)
+t.delete(-3)
+t.delete(-1)
+t.delete(5)
+t.delete(1)
+t.delete(-2)
+t.delete(6)
+t.delete(25)
+t.delete(24)
+t.delete(2)
